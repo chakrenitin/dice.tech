@@ -4,13 +4,10 @@ import com.dice.weather.dao.UserDao;
 import com.dice.weather.dto.AuthenticationRequest;
 import com.dice.weather.security.JwtUtils;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.codec.binary.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,13 +26,14 @@ public class AuthenticationController {
     public ResponseEntity<String> authenticate(
             @RequestBody AuthenticationRequest request){
 
-//        authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(request.getClientId(),request.getClientSecret())
-//        );
-
         final UserDetails user = userDao.findUserNameByClientId(request.getClientId());
 
         if(user!=null){
+
+            if(!StringUtils.equals(user.getPassword(),request.getClientSecret())){
+                return ResponseEntity.status(401).body("Unauthorized");
+            }
+
             return ResponseEntity.ok(jwtUtils.generateToken(user));
         }
         return ResponseEntity.status(400).body("Some Error Occurred");
