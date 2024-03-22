@@ -27,6 +27,5 @@ public class UserDao {
                 .filter(u -> u.getUsername().equals(clientID))
                 .findFirst()
                 .orElseThrow(()-> new UsernameNotFoundException("No User Found"));
-//        return null;
     }
 }
