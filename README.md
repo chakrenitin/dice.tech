@@ -13,6 +13,7 @@ You will find the postman collection in the repository for your reference during
 Use Client ID :- 'dicetechuser' and Client Secret :- 'f2a1ed52710d4533bde25be6da03b6e3'
 
 Added extra API :- /api/v1/auth/authenticate
+
     Which will provide you the JWT token once you authenticate your clientID and clientSecret. Use that JWT token for further authentication for API's.
     This will help you when you try to integrate the provided API's with any Automation tools (e.g. Scriptrunner, Postman etc).
 
